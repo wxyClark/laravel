@@ -83,6 +83,11 @@ chmod -R 777 /home/user/ProjectDir
 
 ## Laravel9
 
+```bash
+# 新项目一步到位
+curl -s "https://laravel.build/example-app?with=mysql,redis,memcached,selenium" | bash
+```
+
 ### 初始化
 ```sh
 git clone https://github.com/laravel/laravel.git
