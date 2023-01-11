@@ -17,3 +17,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::group(['prefix' => 'v1'], function () {
+    //  运维检测
+    Route::group(['namespace' => 'DevOps'], function () {
+        Route::get('/health/web', function () {
+            $response = [
+                'code' => '200',
+                'data' => ['health' => true],
+                'msg' => 'web is health',
+            ];
+            return response()->json($response);
+        });
+        Route::get('/health/db', function () {return response()->json([1]);});
+        Route::get('/health/redis', function () {return response()->json([1]);});
+        Route::get('/health/memcached', function () {return response()->json([1]);});
+    });
+
+});
