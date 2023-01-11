@@ -91,7 +91,8 @@ curl -s "https://laravel.build/example-app?with=mysql,redis,memcached,selenium" 
 ### 初始化
 ```sh
 git clone https://github.com/laravel/laravel.git
-comoser update
+composer update
+composer require --ignore-platform-reqs --dev barryvdh/laravel-ide-helper
 
 php artisan key:generate
 php artisan serve
