@@ -47,7 +47,7 @@ sudo dnf install php -y
 sudo dnf install php-opcache php-bz2 php-calendar php-ctype php-curl php-dom php-exif 
   php-fileinfo php-ftp php-gettext php-iconv php-mbstring php-mysqlnd php-pdo php-phar 
   php-simplexml php-sockets php-sodium php-sqlite3 php-tokenizer php-xml php-xmlwriter 
-  php-xsl php-mysqli php-pdo_mysql php-pdo_sqlite php-xmlreader
+  php-xsl php-mysqli php-pdo_mysql php-pdo_sqlite php-xmlreader php-gd php-zip
 ```
 
 * [ohMyZsh](http://wjhsh.net/redirect-p-7776540.html)
@@ -93,6 +93,8 @@ curl -s "https://laravel.build/example-app?with=mysql,redis,memcached,selenium" 
 git clone https://github.com/laravel/laravel.git
 composer update
 composer require --ignore-platform-reqs --dev barryvdh/laravel-ide-helper
+composer require mavinoo/laravel-batch
+composer require maatwebsite/excel
 
 php artisan key:generate
 php artisan serve
