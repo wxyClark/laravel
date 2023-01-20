@@ -6,9 +6,9 @@ namespace App\Models\AbcDemo;
 
 use App\Models\BaseModel;
 
-class BusinessNameLogModel extends BaseModel
+class RuleNameDetailModel extends BaseModel
 {
-    protected $table = 'demo_business_name_log';
+    protected $table = 'demo_rule_name_detail';
 
     protected $guarded = ['id'];
 

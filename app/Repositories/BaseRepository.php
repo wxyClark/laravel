@@ -188,7 +188,7 @@ abstract class BaseRepository
     }
 
     /**
-     * @desc 批量更新 TODO 安装mavinoo/laravel-batch 插件
+     * @desc 批量更新
      * @param  array  $data
      * @param  string  $index
      * @return mixed

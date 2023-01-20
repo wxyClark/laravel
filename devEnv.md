@@ -112,6 +112,18 @@ php artisan sail:install
 ./vendor/bin/sail up -d
 ```
 
+### migrate
+
+```danger
+当一台机跑多个环境时，3306端口只能提供一个服务，部分环境需要修改mysql服务的端口映射
+
+.env文件 DB_PORT 配置值应与 docker-compose.yml 配置的 mysql.ports.FORWARD_DB_PORT 值 保持一致
+
+如果不一致，在执行 php artisan migrate:xxx 命令是会报MySQL 2000 错误：
+
+SQLSTATE[HY000] [2002] Connection refused (SQL: select * from information_schema.tables where table_schema = laravel and table_name = migrations and table_type = 'BASE TABLE')
+```
+
 ## 宿主机
 
 * WSL2项目文件路径 \\wsl.localhost\OracleLinux_8_5

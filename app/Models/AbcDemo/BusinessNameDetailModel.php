@@ -12,5 +12,5 @@ class BusinessNameDetailModel extends BaseModel
 
     protected $guarded = ['id'];
 
-    public $timestamps = false;
+    public $timestamps = true;
 }

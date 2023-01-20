@@ -13,4 +13,9 @@ class RelationNameRepository extends BaseRepository
     ) {
         $this->model = $model;
     }
+
+    protected function condition(array $userInfo, array $params)
+    {
+        // TODO: Implement condition() method.
+    }
 }
