@@ -11,13 +11,13 @@ class BaseRequest extends Request
 {
     public $rules;
 
-    public function validateParams(array $rules)
+    public function validateParams()
     {
+        //  TODO $this->input() 没有获取到参数
         $params = $this->input();
-
         $field_names = [];
         $rule_data = [];
-        foreach ($rules as $key => $rule) {
+        foreach ($this->rules as $key => $rule) {
             $rule_data[$key] = $rule[0];
             $field_names[$key] = $rule[1];
         }

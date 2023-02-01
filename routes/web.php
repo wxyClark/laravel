@@ -36,6 +36,7 @@ Route::group(['prefix' => 'v1'], function () {
     //  AbcDemo 代码模板
     Route::group(['namespace' => 'AbcDemo', 'prefix' => 'demo'], function () {
         //  BusinessName 业务名称
+        Route::get('/BusinessName/demo', 'BusinessNameController@demo');
         Route::get('/BusinessName/index', 'BusinessNameController@index');
         Route::get('/BusinessName/detail', 'BusinessNameController@detail');
         Route::get('/BusinessName/export', 'BusinessNameController@export');

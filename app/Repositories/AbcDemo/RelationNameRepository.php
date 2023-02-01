@@ -2,15 +2,14 @@
 
 namespace App\Repositories\AbcDemo;
 
+use App\Models\AbcDemo\RelationNameModel;
 use App\Repositories\BaseRepository;
 
 class RelationNameRepository extends BaseRepository
 {
     protected $model;
 
-    public function __construct(
-        RelationNameModel $model
-    ) {
+    public function __construct(RelationNameModel $model) {
         $this->model = $model;
     }
 

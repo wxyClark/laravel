@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AbcDemo;
 
 use App\Enums\ErrorCodeEnums;
 use App\Http\Controllers\Controller;
+use App\Requests\AbcDemo\BusinessName\IndexRequest;
 use App\Services\AbcDemo\BusinessNameService;
 use Illuminate\Http\Request;
 
@@ -29,17 +30,23 @@ class BusinessNameController extends Controller
     public function demo(Request $request)
     {
         try {
-            //  如果参数不需要校验，直接使用 Illuminate\Http\Request
-            return $this->responseJson(ErrorCodeEnums::ERROR_CODE_DEFAULT, ['params' => $request->input()], '');
+            return $this->responseJson(ErrorCodeEnums::ERROR_CODE_DEFAULT, ['params' => $request->input()], __METHOD__);
         } catch (\Exception $e) {
             return $this->responseJson($e->getCode(), [], $e->getMessage());
         }
     }
 
-    public function index(Request $request)
+    /**
+     * @desc 如果参数需要校验，必须使用 App\Requests\BaseRequest 的子类 如果参数不需要校验，直接使用 BaseRequest
+     * @param  IndexRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(IndexRequest $request)
     {
         try {
-            //  如果参数需要校验，必须使用 App\Requests\BaseRequest
+            $this->validateRequest($request, __FUNCTION__);
+
+            return $this->responseJson(ErrorCodeEnums::ERROR_CODE_DEFAULT, ['params' => $request->input()]);
         } catch (\Exception $e) {
             return $this->responseJson($e->getCode(), [], $e->getMessage());
         }
