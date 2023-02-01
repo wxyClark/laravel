@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Validator;
 
 class Controller extends BaseController
 {
@@ -34,13 +35,51 @@ class Controller extends BaseController
     }
 
     /**
-     * @desc 通用参数校验方法
+     * @desc 通用BaseRequest校验方法
      * @param BaseRequest $request
      * @throws \Exception
      */
-    public function validateRequest($request)
+    public function validateRequest(BaseRequest $request)
     {
         $rs = $request->validateParams();
+        if (!$rs['status']) {
+            $errorCode = ErrorCodeEnums::ERROR_CODE_PARAMS_INVALID;
+            $errorType = ErrorCodeEnums::getCodeDefinition($errorCode);
+            throw new \Exception($errorType.':'.$rs['msg'], $errorCode);
+        }
+    }
+
+    /**
+     * @desc 通用参数校验方法
+     * @param  array  $params
+     * @param  array  $rules
+     * @throws \Exception
+     */
+    public function validateParams(array $params, array $rules)
+    {
+        $field_names = [];
+        $rule_data = [];
+        foreach ($rules as $key => $rule) {
+            $rule_data[$key] = $rule[0];
+            $field_names[$key] = $rule[1];
+        }
+
+        $rs = ['status' => true];
+
+        $validator = Validator::make($params, $rule_data, [], $field_names);
+        if ($validator->fails()) {
+            $message = '';
+            if ($validator->errors() && !empty($validator->errors())) {
+                $params = json_decode($validator->errors(), true);
+                if (!empty($params)) {
+                    foreach ($params as $value) {
+                        $message .= implode(',', $value) . ';';
+                    }
+                }
+            }
+            $rs = ['status' => false, 'msg' => $message];
+        }
+
         if (!$rs['status']) {
             $errorCode = ErrorCodeEnums::ERROR_CODE_PARAMS_INVALID;
             $errorType = ErrorCodeEnums::getCodeDefinition($errorCode);
