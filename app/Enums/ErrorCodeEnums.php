@@ -12,6 +12,9 @@ class ErrorCodeEnums
         self::HTTP_STATUS_CODE_SEND_SUCCESS => '请求发送成功',
     ];
 
+    //  默认错误
+    const ERROR_CODE_DEFAULT = 999999;
+
     //  参数错误
     const ERROR_CODE_PARAMS_EMPTY = 100000;
     const ERROR_CODE_PARAMS_INVALID = 100001;
@@ -37,6 +40,8 @@ class ErrorCodeEnums
     const ERROR_CODE_THIRD_PARTY_API_ERROR = 400004;
 
     const ERROR_CODE_MAP = [
+        self::ERROR_CODE_DEFAULT                 => '成功',
+
         self::ERROR_CODE_PARAMS_EMPTY            => '参数为空',
         self::ERROR_CODE_PARAMS_INVALID          => '参数校验失败',
         self::ERROR_CODE_PARAMS_OUT_OF_RANGE     => '参数超出有效范围',
@@ -57,4 +62,14 @@ class ErrorCodeEnums
         self::ERROR_CODE_THIRD_PARTY_API_OUT_OF_TIME => '第三方接口超时',
         self::ERROR_CODE_THIRD_PARTY_API_ERROR       => '第三方接口报错',
     ];
+
+    /**
+     * @desc 获取错误类型定义
+     * @param  int  $code
+     * @return string
+     */
+    public static function getCodeDefinition(int $code)
+    {
+        return self::ERROR_CODE_MAP[$code] ?? '未知错误($code=)'.$code;
+    }
 }
