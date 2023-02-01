@@ -95,13 +95,15 @@ composer update
 composer require --ignore-platform-reqs --dev barryvdh/laravel-ide-helper
 composer require mavinoo/laravel-batch
 composer require maatwebsite/excel
+# 参数校验信息中文化
+composer require "overtrue/laravel-lang:~6.0"
+# 修改config里面的app.php
+  'locale' => 'zh_CN',  
+php artisan lang:publish zh_CN
 
 php artisan key:generate
 php artisan serve
 
-复制 vendor/laravel-lang/lang/src/zh-CN 目录到 ./lang 目录下
-# 修改config里面的app.php
-  'locale' => 'zh-CN',  
 ```
 
 ### git token
