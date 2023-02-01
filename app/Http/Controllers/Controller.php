@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ErrorCodeEnums;
+use App\Helper\ArrayHelper;
 use App\Requests\BaseRequest;
+use App\Traits\LoggerTrait;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Monolog\Logger;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, LoggerTrait;
 
     /**
      * @desc 通用返回json响应的方法
@@ -26,9 +30,9 @@ class Controller extends BaseController
         $code = $code == 0 ? 50000 : $code;
 
         $response = array(
-            'code'    => $code,
-            'data'    => $data,
-            'msg'     => empty($message) ? ErrorCodeEnums::getCodeDefinition($code) : $message,
+            'code' => $code,
+            'data' => $data,
+            'msg'  => empty($message) ? ErrorCodeEnums::getCodeDefinition($code) : $message,
         );
 
         return response()->json($response, 200, [], JSON_UNESCAPED_UNICODE);
@@ -36,7 +40,7 @@ class Controller extends BaseController
 
     /**
      * @desc 通用BaseRequest校验方法
-     * @param BaseRequest $request
+     * @param  BaseRequest  $request
      * @throws \Exception
      */
     public function validateRequest(BaseRequest $request)
@@ -73,7 +77,7 @@ class Controller extends BaseController
                 $params = json_decode($validator->errors(), true);
                 if (!empty($params)) {
                     foreach ($params as $value) {
-                        $message .= implode(',', $value) . ';';
+                        $message .= implode(',', $value).';';
                     }
                 }
             }
@@ -85,5 +89,24 @@ class Controller extends BaseController
             $errorType = ErrorCodeEnums::getCodeDefinition($errorCode);
             throw new \Exception($errorType.':'.$rs['msg'], $errorCode);
         }
+    }
+
+    /**
+     * @desc 处理异常日志
+     * @param  \Throwable  $throwable
+     * @param  string  $title
+     * @param  string  $method
+     * @return bool
+     */
+    public function errorLog(\Throwable $throwable, string $title, string $method, string $logFileName)
+    {
+        //  参数错误,单独记录日志
+        if (in_array($throwable->getCode(), ErrorCodeEnums::ERROR_CODE_PARAMS_ARR)) {
+            Log::error($method.' 参数错误', ArrayHelper::getThrowableInfo($throwable, 'BusinessName Demo'));
+            return false;
+        }
+
+        self::logger(ArrayHelper::getThrowableInfo($throwable, $title), $method, $logFileName, Logger::ERROR);
+        return true;
     }
 }

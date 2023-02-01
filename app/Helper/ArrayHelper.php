@@ -25,11 +25,12 @@ class ArrayHelper
     public static function getThrowableInfo(\Throwable $throwable, $title = '')
     {
         return [
-            'title' => $title,
-            'code'  => $throwable->getCode(),
-            'file'  => $throwable->getFile(),
-            'line'  => $throwable->getLine(),
-            'msg'   => $throwable->getMessage(),
+            'title'   => $title,
+            'code'    => $throwable->getCode(),
+            'file'    => $throwable->getFile(),
+            'line'    => $throwable->getLine(),
+            'msg'     => $throwable->getMessage(),
+            'request' => $_REQUEST,
             //  TODO 获取上一层的调用入口
         ];
     }
