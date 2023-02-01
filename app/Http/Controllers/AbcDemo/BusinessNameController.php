@@ -44,7 +44,7 @@ class BusinessNameController extends Controller
     public function index(IndexRequest $request)
     {
         try {
-            $this->validateRequest($request, __FUNCTION__);
+            $this->validateRequest($request);
 
             return $this->responseJson(ErrorCodeEnums::ERROR_CODE_DEFAULT, ['params' => $request->input()]);
         } catch (\Exception $e) {

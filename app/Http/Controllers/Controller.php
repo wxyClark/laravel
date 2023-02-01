@@ -36,16 +36,15 @@ class Controller extends BaseController
     /**
      * @desc 通用参数校验方法
      * @param BaseRequest $request
-     * @param string $route
      * @throws \Exception
      */
-    public function validateRequest($request, $route)
+    public function validateRequest($request)
     {
         $rs = $request->validateParams();
         if (!$rs['status']) {
             $errorCode = ErrorCodeEnums::ERROR_CODE_PARAMS_INVALID;
             $errorType = ErrorCodeEnums::getCodeDefinition($errorCode);
-            throw new \Exception($route.$errorType.':'.$rs['msg'], $errorCode);
+            throw new \Exception($errorType.':'.$rs['msg'], $errorCode);
         }
     }
 }
