@@ -45,16 +45,6 @@ class BusinessNameRepository extends BaseRepository
     }
 
     /**
-     * @desc 新增记录
-     * @param  array  $data
-     * @return mixed
-     */
-    public function add(array $data)
-    {
-        return $this->model->insert($data);
-    }
-
-    /**
      * @desc 新增详情
      * @param  array  $data
      * @return mixed
@@ -62,16 +52,6 @@ class BusinessNameRepository extends BaseRepository
     public function addDetail(array $data)
     {
         return $this->detailModel->insert($data);
-    }
-
-    /**
-     * @desc 新增日志
-     * @param  array  $data
-     * @return mixed
-     */
-    public function addLog(array $data)
-    {
-        return $this->logModel->insert($data);
     }
 
     /**
@@ -89,6 +69,18 @@ class BusinessNameRepository extends BaseRepository
     }
 
     /**
+     * @desc 详情列表
+     * @param  array  $params
+     * @return mixed
+     * @author wxy
+     * @ctime 2023/2/14 16:16
+     */
+    public function getDetailList(array $params)
+    {
+        return $this->detailCondition($params['tenant_id'],  $params['uniq_code'])->orderBy('id', 'asc')->get()->toArray();
+    }
+
+    /**
      * @desc 通用查询条件
      * @param  array  $userInfo
      * @param  array  $params
@@ -96,6 +88,7 @@ class BusinessNameRepository extends BaseRepository
      */
     protected function condition(array $userInfo, array $params)
     {
+        echo __METHOD__ . PHP_EOL;
         $query = $this->model->where('tenant_id', $userInfo['tenant_id']);
 
         //  ID
@@ -105,7 +98,7 @@ class BusinessNameRepository extends BaseRepository
 
         //  唯一编码
         if (!empty($params['uniq_code'])) {
-            $query->whereIn('uniq_code', (array)$params['uniq_code']);
+            $query->whereIn($this->model->uniqCode, (array)$params['uniq_code']);
         }
 
         //  状态
@@ -136,8 +129,16 @@ class BusinessNameRepository extends BaseRepository
         return $query;
     }
 
+    /**
+     * @desc 详情通用查询
+     * @param  int  $tenantId
+     * @param  int  $uniqCode
+     * @return mixed
+     * @author wxy
+     * @ctime 2023/2/14 16:16
+     */
     private function detailCondition(int $tenantId, int $uniqCode)
     {
-
+        return $this->detailModel->where('tenant_id', $tenantId)->where('business_name_code', $uniqCode);
     }
 }

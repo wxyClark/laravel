@@ -24,7 +24,9 @@ return new class extends Migration
             $table->json('attributes')->comment('参数配置');
             $table->bigInteger('created_by_uniq_code')->unsigned()->default(0)->comment('创建人编码');
             $table->bigInteger('updated_by_uniq_code')->unsigned()->default(0)->comment('修改人编码');
-            $table->timestamps();
+
+            $table->timestamp('created_at')->useCurrent()->comment('创建时间');
+            $table->timestamp('updated_at')->default(\App\Enums\DateTimeEnums::DEFAULT_DATETIME)->useCurrentOnUpdate()->comment('更新时间');
 
             $table->index(['tenant_id', 'business_name_code'], 'idx_tenant_id_business_name_code');
             $table->index(['updated_by_uniq_code'], 'idx_updated_by_uniq_code');

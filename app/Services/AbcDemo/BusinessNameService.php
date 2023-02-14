@@ -117,6 +117,7 @@ class BusinessNameService extends BaseService
             }
         } catch (\Throwable $t) {
             $this->errorLog($t, 'BusinessName新增 数据组装', __METHOD__, self::LOG_NAME);
+            throw $t;
         }
 
         try {
@@ -136,8 +137,8 @@ class BusinessNameService extends BaseService
             DB::commit();
         } catch (\Throwable $t) {
             DB::rollBack();
-            dd($t);
             $this->errorLog($t, 'BusinessName新增 事务提交', __METHOD__, self::LOG_NAME);
+            throw $t;
         }
 
         return [
@@ -150,10 +151,30 @@ class BusinessNameService extends BaseService
 
     }
 
-    public function getDetail($params)
+    /**
+     * @desc 获取详情
+     * @param array $params
+     * @return mixed
+     * @author wxy
+     * @ctime 2023/2/14 16:17
+     */
+    public function getDetail(array $params)
     {
         try {
+            echo __METHOD__ . PHP_EOL;
+            $fields = ['business_name_code', 'type',  'status',  'percent',  'business_name',  'color',  'created_by_uniq_code', 'updated_by_uniq_code', 'created_at',  'updated_at'];
+            $params['page'] = 1;
+            $params['page_size'] = 1;
 
+            $data = $this->businessNameRe->getList(['tenant_id' => $params['tenant_id']], $params, $fields);
+            $data = $this->formatDataList($data);
+            $data = current($data);
+
+            unset($params['page'], $params['page_size']);
+            $data['detail_list'] = $this->businessNameRe->getDetailList($params);
+            $data['detail_list'] = $this->formatDetailList($data['detail_list']);
+
+            return $data;
         } catch (\Throwable $t) {
             $this->errorLog($t, 'BusinessName新增', __METHOD__, self::LOG_NAME);
         }
@@ -180,10 +201,21 @@ class BusinessNameService extends BaseService
 
     }
 
-
-    private function formatList($params)
+    /**
+     * @desc 格式化列表
+     * @param  array  $data
+     * @return array
+     * @author wxy
+     * @ctime 2023/2/14 17:17
+     */
+    private function formatDataList(array $data)
     {
+        foreach ($data as &$item) {
 
+        }
+        unset($item);
+
+        return $data;
     }
 
     private function formatListFromEs($params)
@@ -191,8 +223,20 @@ class BusinessNameService extends BaseService
 
     }
 
-    private function formatDetail($params)
+    /**
+     * @desc 格式化详情
+     * @param array $detailList
+     * @return mixed
+     * @author wxy
+     * @ctime 2023/2/14 17:16
+     */
+    private function formatDetailList(array $detailList)
     {
+        foreach ($detailList as &$detail) {
+            $detail['attributes'] = json_decode($detail['attributes'], true);
+        }
+        unset($detail);
 
+        return $detailList;
     }
 }

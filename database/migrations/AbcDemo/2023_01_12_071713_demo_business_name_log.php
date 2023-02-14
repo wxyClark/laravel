@@ -28,7 +28,8 @@ return new class extends Migration
             $table->json('after_change')->comment('变更前的值[value => 2, transform => 状态2]');
 
             $table->bigInteger('operator_uniq_code')->unsigned()->default(0)->comment('操作人编码');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->comment('创建时间');
+            $table->timestamp('updated_at')->default(\App\Enums\DateTimeEnums::DEFAULT_DATETIME)->useCurrentOnUpdate()->comment('更新时间');
 
             $table->index(['tenant_id', 'business_name_code'], 'idx_tenant_id_business_name_code');
             $table->index(['action_type'], 'idx_action_type');

@@ -22,13 +22,17 @@ abstract class BaseRepository
         self::BOOLEAN_FALSE => '否',
     ];
 
+
     /**
      * @desc 通用查询方法
      * @param  array  $userInfo
      * @param  array  $params
      * @return mixed
      */
-    abstract protected function condition(array $userInfo, array $params);
+    protected function condition(array $userInfo, array $params)
+    {
+
+    }
 
     /**
      * @desc 获取记录总数
@@ -38,7 +42,8 @@ abstract class BaseRepository
      */
     public function getTotal(array $userInfo, array $params)
     {
-        return $this->model->contditon($userInfo, $params)->count();
+        //  子类重写condition方法，子类调用当前方法时自动调用子类的condition方法
+        return $this->condition($userInfo, $params)->count();
     }
 
     /**
@@ -51,10 +56,10 @@ abstract class BaseRepository
      */
     public function getList(array $userInfo, array $params, array $fields = ['*'])
     {
-        $query = $this->model->contditon($userInfo, $params);
-
+        echo __METHOD__ .PHP_EOL;
+        $query = $this->condition($userInfo, $params);
         //  全局默认按更新时间排序
-        if (!empty($params['sort_arr'])) {
+        if (empty($params['sort_arr'])) {
             $params['sort_arr'] = ['updated_at' => 'DESC'];
         }
         foreach ($params['sort_arr'] as $sortColumn => $sortType) {
@@ -63,8 +68,7 @@ abstract class BaseRepository
 
         //  分页
         $pageParams = $this->getPageParams($params);
-        $offset = ($pageParams['page'] - 1) * $pageParams['page_size'];
-        $query->offset($offset)->limit($offset);
+        $query->offset($pageParams['offset'])->limit($pageParams['page_size']);
 
         return $query->select($fields)->get()->toArray();
     }
@@ -79,7 +83,7 @@ abstract class BaseRepository
      */
     public function getListByMinId(array $userInfo, array $params, int $limit, array $fields = ['*'])
     {
-        $query = $this->model->contditon($userInfo, $params);
+        $query = $this->condition($userInfo, $params);
 
         if (!empty($params['sort_arr'])) {
             $params['sort_arr'] = ['id' => 'ASC'];
@@ -100,7 +104,7 @@ abstract class BaseRepository
      */
     public function getRecordByUniqData(array $userInfo, array $params, array $fields)
     {
-        $query = $this->model->contditon($userInfo, $params);
+        $query = $this->condition($userInfo, $params);
         if (!empty($params['sort_arr'])) {
             foreach ($params['sort_arr'] as $sortColumn => $sortType) {
                 $query->orderBy($sortColumn, $sortType);
@@ -131,6 +135,7 @@ abstract class BaseRepository
         return [
             'page'      => $page,
             'page_size' => $pageSize,
+            'offset'    => ($page - 1) * $pageSize,
         ];
     }
 
@@ -162,7 +167,7 @@ abstract class BaseRepository
      */
     public function deleteByUniqData(array $userInfo, array $uniqData)
     {
-        return $this->model->contditon($userInfo, $uniqData)->delete();
+        return $this->condition($userInfo, $uniqData)->delete();
     }
 
     /**
@@ -184,7 +189,7 @@ abstract class BaseRepository
             throw new \Exception('更新数据行数超出上限：'.CommonEnums::MAX_UPDATE_LIMIT, ErrorCodeEnums::ERROR_CODE_PARAMS_EMPTY);
         }
 
-        return $this->model->contditon($userInfo, $uniqData)->update($updateData);
+        return $this->model->condition($userInfo, $uniqData)->update($updateData);
     }
 
     /**

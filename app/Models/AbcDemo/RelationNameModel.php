@@ -10,5 +10,5 @@ class RelationNameModel extends BaseModel
 
     protected $guarded = ['id'];
 
-    public $timestamps = true;
+    public $uniqCode = 'relation_code';
 }

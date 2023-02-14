@@ -21,6 +21,13 @@ class BusinessName extends Command
      */
     protected $description = 'Command description';
 
+    private $service;
+
+    public function __construct(BusinessNameService $service) {
+        parent::__construct();
+        $this->service = $service;
+    }
+
     /**
      * Execute the console command.
      *
@@ -47,7 +54,7 @@ class BusinessName extends Command
         $params = [
             'tenant_id'     => 500001,
             'user_code'     => 111111,
-            'business_name' => '业务名称1',
+            'business_name' => '业务名称2',
             'color'         => 'FFF333',
             'type'          => 1,
             'status'        => 2,
@@ -55,22 +62,32 @@ class BusinessName extends Command
 
             'details' => [
                 [
-                    'desc'               => '详细描述1',
-                    'attributes'         => [
+                    'desc'       => '详细描述1',
+                    'attributes' => [
                         'label' => 'label1',
-                        'key' => 'key1',
+                        'key'   => 'key1',
                     ],
                 ],
                 [
-                    'desc'               => '详细描述2',
-                    'attributes'         => [
+                    'desc'       => '详细描述2',
+                    'attributes' => [
                         'label' => 'label2',
-                        'key' => 'key2',
+                        'key'   => 'key2',
                     ],
                 ],
             ],
         ];
 
         return app(BusinessNameService::class)->add($params);
+    }
+
+    private function detail()
+    {
+        $params = [
+            'tenant_id' => 500001,
+            'uniq_code' => '466054884029091840',
+        ];
+
+        return $this->service->getDetail($params);
     }
 }

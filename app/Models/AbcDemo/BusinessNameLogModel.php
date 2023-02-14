@@ -12,5 +12,5 @@ class BusinessNameLogModel extends BaseModel
 
     protected $guarded = ['id'];
 
-    public $timestamps = true;
+    public $uniqCode = null;
 }

@@ -12,5 +12,5 @@ class RuleNameDetailModel extends BaseModel
 
     protected $guarded = ['id'];
 
-    public $timestamps = true;
+    public $uniqCode = 'rule_name_detail_code';
 }

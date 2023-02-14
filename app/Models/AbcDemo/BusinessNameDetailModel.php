@@ -12,5 +12,5 @@ class BusinessNameDetailModel extends BaseModel
 
     protected $guarded = ['id'];
 
-    public $timestamps = true;
+    public $uniqCode = 'business_name_detail_code';
 }

@@ -151,7 +151,9 @@ class BusinessNameController extends Controller
             ];
             $this->validateParams($request->input(), $rules);
 
-            return $this->responseJson(ErrorCodeEnums::ERROR_CODE_DEFAULT, ['params' => $request->input()]);
+            $data = $this->service->getDetail($request->input());
+
+            return $this->responseJson(ErrorCodeEnums::ERROR_CODE_DEFAULT, $data);
         } catch (\Throwable $t) {
             $this->errorLog($t, 'BusinessName详情', __METHOD__, self::LOG_NAME);
 

@@ -27,7 +27,8 @@ return new class extends Migration
             $table->char('color', 6)->default('000000')->comment('颜色');
             $table->bigInteger('created_by_uniq_code')->default(0)->comment('创建人编码');
             $table->bigInteger('updated_by_uniq_code')->default(0)->comment('修改人编码');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->comment('创建时间');
+            $table->timestamp('updated_at')->default(\App\Enums\DateTimeEnums::DEFAULT_DATETIME)->useCurrentOnUpdate()->comment('更新时间');
 
             $table->unique(['tenant_id', 'business_name'], 'uk_tenant_id_business_name');
             $table->index(['business_name_code'], 'idx_business_name_code');
