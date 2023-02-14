@@ -642,6 +642,7 @@ class ComposerStaticInit35a7af9b0b688ec29017dd599e57f17e
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Contracts\\PathsRepository' => __DIR__ . '/..' . '/laravel/pint/app/Contracts/PathsRepository.php',
         'App\\Enums\\CommonEnums' => __DIR__ . '/../..' . '/app/Enums/CommonEnums.php',
+        'App\\Enums\\DateTimeEnums' => __DIR__ . '/../..' . '/app/Enums/DateTimeEnums.php',
         'App\\Enums\\ErrorCodeEnums' => __DIR__ . '/../..' . '/app/Enums/ErrorCodeEnums.php',
         'App\\Enums\\PageEnums' => __DIR__ . '/../..' . '/app/Enums/PageEnums.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',

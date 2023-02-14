@@ -13,6 +13,7 @@ return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Contracts\\PathsRepository' => $vendorDir . '/laravel/pint/app/Contracts/PathsRepository.php',
     'App\\Enums\\CommonEnums' => $baseDir . '/app/Enums/CommonEnums.php',
+    'App\\Enums\\DateTimeEnums' => $baseDir . '/app/Enums/DateTimeEnums.php',
     'App\\Enums\\ErrorCodeEnums' => $baseDir . '/app/Enums/ErrorCodeEnums.php',
     'App\\Enums\\PageEnums' => $baseDir . '/app/Enums/PageEnums.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
