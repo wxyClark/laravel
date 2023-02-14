@@ -100,26 +100,22 @@ class BusinessNameRepository extends BaseRepository
 
         //  ID
         if (!empty($params['id'])) {
-            $idArr = ArrayHelper::paramsItemToArray($params['id']);
-            $query->whereIn('id', $idArr);
+            $query->whereIn('id', (array)$params['id']);
         }
 
         //  唯一编码
         if (!empty($params['uniq_code'])) {
-            $uniqCodeArr = ArrayHelper::paramsItemToArray($params['uniq_code']);
-            $query->whereIn('uniq_code', $uniqCodeArr);
+            $query->whereIn('uniq_code', (array)$params['uniq_code']);
         }
 
         //  状态
         if (!empty($params['status'])) {
-            $statusArr = ArrayHelper::paramsItemToArray($params['status']);
-            $query->whereIn('status', $statusArr);
+            $query->whereIn('status', (array)$params['status']);
         }
 
         //  操作人 (created_by、updated_by、checked_by)
         if (!empty($params['operator_type']) && !empty($params['operator'])) {
-            $operatorArr = ArrayHelper::paramsItemToArray($params['operator']);
-            $query->whereIn($params['operator_type'], $operatorArr);
+            $query->whereIn($params['operator_type'], (array)$params['operator']);
         }
 
         //  时间段(全局时间段查询只精确到日期)
