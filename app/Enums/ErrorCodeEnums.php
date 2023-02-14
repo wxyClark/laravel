@@ -19,11 +19,13 @@ class ErrorCodeEnums
     const ERROR_CODE_PARAMS_EMPTY = 100000;
     const ERROR_CODE_PARAMS_INVALID = 100001;
     const ERROR_CODE_PARAMS_OUT_OF_RANGE = 100002;
-    const ERROR_CODE_PARAMS_RECORD_NOT_EXIST = 100003;
+    const ERROR_CODE_PARAMS_PAGINATION_NOT_EXIST = 100003;
+    const ERROR_CODE_PARAMS_RECORD_NOT_EXIST = 100004;
     const ERROR_CODE_PARAMS_ARR = [
         self::ERROR_CODE_PARAMS_EMPTY,
         self::ERROR_CODE_PARAMS_INVALID,
         self::ERROR_CODE_PARAMS_OUT_OF_RANGE,
+        self::ERROR_CODE_PARAMS_PAGINATION_NOT_EXIST,
         self::ERROR_CODE_PARAMS_RECORD_NOT_EXIST,
     ];
 
@@ -48,10 +50,11 @@ class ErrorCodeEnums
     const ERROR_CODE_MAP = [
         self::ERROR_CODE_DEFAULT                 => '成功',
 
-        self::ERROR_CODE_PARAMS_EMPTY            => '参数为空',
-        self::ERROR_CODE_PARAMS_INVALID          => '参数校验失败',
-        self::ERROR_CODE_PARAMS_OUT_OF_RANGE     => '参数超出有效范围',
-        self::ERROR_CODE_PARAMS_RECORD_NOT_EXIST => '参数指向数据不存在',
+        self::ERROR_CODE_PARAMS_EMPTY                => '参数为空',
+        self::ERROR_CODE_PARAMS_INVALID              => '参数校验失败',
+        self::ERROR_CODE_PARAMS_OUT_OF_RANGE         => '参数超出有效范围',
+        self::ERROR_CODE_PARAMS_PAGINATION_NOT_EXIST => '未指定分页参数',
+        self::ERROR_CODE_PARAMS_RECORD_NOT_EXIST     => '参数指向数据不存在',
 
         self::ERROR_CODE_RECORD_OPERATION_NOT_SUPPORTED => '指定数据不支持当前操作',
         self::ERROR_CODE_RECORD_IS_IN_LOCK              => '指定数据被锁，不可操作',

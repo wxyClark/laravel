@@ -88,7 +88,6 @@ class BusinessNameRepository extends BaseRepository
      */
     protected function condition(array $userInfo, array $params)
     {
-        echo __METHOD__ . PHP_EOL;
         $query = $this->model->where('tenant_id', $userInfo['tenant_id']);
 
         //  ID

@@ -54,7 +54,7 @@ class BusinessName extends Command
         $params = [
             'tenant_id'     => 500001,
             'user_code'     => 111111,
-            'business_name' => '业务名称2',
+            'business_name' => '业务名称4',
             'color'         => 'FFF333',
             'type'          => 1,
             'status'        => 2,
@@ -89,5 +89,15 @@ class BusinessName extends Command
         ];
 
         return $this->service->getDetail($params);
+    }
+
+    private function list()
+    {
+        $params = [
+            'tenant_id' => 500001,
+            'uniq_code' => '466054884029091840',
+        ];
+
+        return $this->service->getList($params);
     }
 }

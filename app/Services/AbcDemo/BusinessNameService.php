@@ -161,7 +161,6 @@ class BusinessNameService extends BaseService
     public function getDetail(array $params)
     {
         try {
-            echo __METHOD__ . PHP_EOL;
             $fields = ['business_name_code', 'type',  'status',  'percent',  'business_name',  'color',  'created_by_uniq_code', 'updated_by_uniq_code', 'created_at',  'updated_at'];
             $params['page'] = 1;
             $params['page_size'] = 1;
@@ -180,9 +179,33 @@ class BusinessNameService extends BaseService
         }
     }
 
-    public function getList($params)
+    /**
+     * @desc 列表
+     * @param array $params
+     * @return array
+     * @throws \Exception
+     * @author wxy
+     * @ctime 2023/2/14 18:14
+     */
+    public function getList(array $params)
     {
+        $params = $this->initPageSize($params);
+        $result = [
+            'total'     => 0,
+            'list'      => [],
+            'page'      => $params['page'],
+            'page_size' => $params['page_size'],
+        ];
+        $result['total'] = $this->businessNameRe->getTotal(['tenant_id' => $params['tenant_id']], $params);
+        if (empty($result['total'])) {
+            return $result;
+        }
 
+        $fields = ['business_name_code', 'type',  'status',  'percent',  'business_name',  'color',  'created_by_uniq_code', 'updated_by_uniq_code', 'created_at',  'updated_at'];
+        $result['list'] = $this->businessNameRe->getList(['tenant_id' => $params['tenant_id']], $params, $fields);
+        $result['list'] = $this->formatDataList($result['list']);
+
+        return $result;
     }
 
     public function getListFromEs($params)

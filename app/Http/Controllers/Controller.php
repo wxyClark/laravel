@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Enums\ErrorCodeEnums;
 use App\Enums\PageEnums;
-use App\Helper\ArrayHelper;
 use App\Requests\BaseRequest;
 use App\Traits\LoggerTrait;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Monolog\Logger;
 
 class Controller extends BaseController
 {
@@ -92,20 +89,4 @@ class Controller extends BaseController
         }
     }
 
-    /**
-     * @desc 初始化页码及分页数
-     * @param $params
-     * @return mixed
-     * @author wxy
-     * @ctime 2023/2/13 16:47
-     */
-    public function initPageSize($params)
-    {
-        $params['page'] = (isset($params['page']) && (int)$params['page'] >= PageEnums::DEFAULT_PAGE) ? $params['page'] : PageEnums::DEFAULT_PAGE;
-        $params['page_size'] = !empty($params['page_size']) && (int)$params['page_size'] >= PageEnums::MIN_PAGE_SIZE && (int)$params['page_size'] <= PageEnums::MIN_PAGE_SIZE
-            ? $params['page_size']
-            : PageEnums::DEFAULT_PAGE_SIZE;
-
-        return $params;
-    }
 }

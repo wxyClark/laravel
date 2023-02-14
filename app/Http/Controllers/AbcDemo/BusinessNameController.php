@@ -126,7 +126,6 @@ class BusinessNameController extends Controller
         try {
             $params = $request->input();
             $this->validateParams($params, self::LIST_RULES);
-            $params = $this->initPageSize($params);
             $data = $this->service->getList($params);
 
             return $this->responseJson(ErrorCodeEnums::ERROR_CODE_DEFAULT, $data);

@@ -56,7 +56,10 @@ abstract class BaseRepository
      */
     public function getList(array $userInfo, array $params, array $fields = ['*'])
     {
-        echo __METHOD__ .PHP_EOL;
+        if (empty($params['page']) || empty($params['page_size'])) {
+            $errorCode = ErrorCodeEnums::ERROR_CODE_PARAMS_PAGINATION_NOT_EXIST;
+            throw new \Exception(ErrorCodeEnums::getCodeDefinition($errorCode), $errorCode);
+        }
         $query = $this->condition($userInfo, $params);
         //  全局默认按更新时间排序
         if (empty($params['sort_arr'])) {
