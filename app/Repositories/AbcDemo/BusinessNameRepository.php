@@ -11,6 +11,20 @@ use App\Repositories\BaseRepository;
 
 class BusinessNameRepository extends BaseRepository
 {
+    const TYPE_A = 1;
+    const TYPE_B = 2;
+    const TYPE_MAP = [
+        self::TYPE_A => 'A类型',
+        self::TYPE_B => 'B类型',
+    ];
+
+    const STATUS_A = 1;
+    const STATUS_B = 2;
+    const STATUS_MAP = [
+        self::STATUS_A => 'A1类型',
+        self::STATUS_B => 'B1类型',
+    ];
+
     /** @var BusinessNameModel  */
     protected $model;
 
@@ -28,6 +42,50 @@ class BusinessNameRepository extends BaseRepository
         $this->model = $model;
         $this->detailModel = $detailModel;
         $this->logModel = $logModel;
+    }
+
+    /**
+     * @desc 新增记录
+     * @param  array  $data
+     * @return mixed
+     */
+    public function add(array $data)
+    {
+        return $this->model->insert($data);
+    }
+
+    /**
+     * @desc 新增详情
+     * @param  array  $data
+     * @return mixed
+     */
+    public function addDetail(array $data)
+    {
+        return $this->detailModel->insert($data);
+    }
+
+    /**
+     * @desc 新增日志
+     * @param  array  $data
+     * @return mixed
+     */
+    public function addLog(array $data)
+    {
+        return $this->logModel->insert($data);
+    }
+
+    /**
+     * @desc 删除详情
+     * @param  array  $params
+     * @return mixed
+     * @author wxy
+     * @ctime 2023/2/13 18:22
+     */
+    public function delDetail(array $params)
+    {
+        return $this->detailModel->where('tenant_id', $params['tenant_id'])
+                 ->where('business_name_code', $params['business_name_code'])
+                 ->delete();
     }
 
     /**
@@ -80,5 +138,10 @@ class BusinessNameRepository extends BaseRepository
         }
 
         return $query;
+    }
+
+    private function detailCondition(int $tenantId, int $uniqCode)
+    {
+
     }
 }

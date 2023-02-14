@@ -11,9 +11,11 @@ trait LoggerTrait
      * @desc 日志  指定日志目录  eg: /logs/error/*.log
      * @param  array  $data
      * @param  string  $title
-     * @param  string  $errorLogName
+     * @param  string  $logFileName
      * @param  int  $level
      * @return false
+     * @author wxy
+     * @ctime 2023/2/13 19:06
      */
     public static function logger(array $data, string $title = '', string $logFileName = 'laravel', int $level = Logger::INFO)
     {

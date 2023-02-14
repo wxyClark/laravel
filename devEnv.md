@@ -95,6 +95,7 @@ composer update
 composer require --ignore-platform-reqs --dev barryvdh/laravel-ide-helper
 composer require mavinoo/laravel-batch
 composer require maatwebsite/excel
+composer require godruoyi/php-snowflake='1.0.9'
 # 参数校验信息中文化
 composer require "overtrue/laravel-lang:~6.0"
 # 修改config里面的app.php
