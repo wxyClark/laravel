@@ -78,7 +78,46 @@ class BusinessName extends Command
             ],
         ];
 
-        return app(BusinessNameService::class)->add($params);
+        return $this->service->add($params);
+    }
+
+
+    /**
+     * @desc ok
+     * @return mixed
+     * @author wxy
+     * @ctime 2023/2/14 11:00
+     */
+    private function edit()
+    {
+        $params = [
+            'tenant_id'     => 500001,
+            'user_code'     => 111111,
+            'business_name' => '业务名称4',
+            'color'         => 'FFF333',
+            'type'          => 1,
+            'status'        => 2,
+            'percent'       => 34,
+
+            'details' => [
+                [
+                    'desc'       => '详细描述1',
+                    'attributes' => [
+                        'label' => 'label1',
+                        'key'   => 'key1',
+                    ],
+                ],
+                [
+                    'desc'       => '详细描述2',
+                    'attributes' => [
+                        'label' => 'label2',
+                        'key'   => 'key2',
+                    ],
+                ],
+            ],
+        ];
+
+        return $this->service->edit($params);
     }
 
     private function detail()

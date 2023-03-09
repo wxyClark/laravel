@@ -4,6 +4,8 @@
 namespace App\Helper;
 
 
+use App\Enums\DateTimeEnums;
+
 class DatetimeHelper
 {
     /**
@@ -26,7 +28,7 @@ class DatetimeHelper
         }else{
             $end = strtotime($endTime);
         }
-        
+
         if(is_numeric($startTime)){
             if(strlen($startTime)>=13){
                 $start = (int)$startTime/1000;
@@ -36,7 +38,7 @@ class DatetimeHelper
         }else{
             $start = strtotime($startTime);
         }
-        
+
 
         $diff = floor(($end - $start) / 3600);
         $day = floor($diff / 24);
@@ -74,5 +76,17 @@ class DatetimeHelper
     public static function getDateStart(string $date)
     {
         return date('Y-m-d 00:00:00', strtotime($date));
+    }
+
+    /**
+     * @desc 处理时间为默认值，表示没有处理 不展示处理时间
+     * @param  string  $time
+     * @return string
+     * @author wxy
+     * @ctime 2023/2/25 11:51
+     */
+    public static function getHandleTime(string $time)
+    {
+        return $time == DateTimeEnums::DEFAULT_DATETIME ? '' : $time;
     }
 }

@@ -47,7 +47,7 @@ abstract class BaseRepository
     }
 
     /**
-     * @desc 新增业务日志
+     * @desc 获取列表
      * @param  array  $userInfo
      * @param  array  $params
      * @param  array|string[]  $fields
@@ -74,6 +74,23 @@ abstract class BaseRepository
         $query->offset($pageParams['offset'])->limit($pageParams['page_size']);
 
         return $query->select($fields)->get()->toArray();
+    }
+
+
+    /**
+     * @desc 获取单条记录
+     * @param  int  $tenantId
+     * @param  string  $uniqCode
+     * @param  array|string[]  $fields
+     * @return array
+     * @author wxy
+     * @ctime 2023/2/15 14:46
+     */
+    public function getByUniqCode(int $tenantId, string $uniqCode, array $fields = ['*'])
+    {
+        $data = $this->model->where('tenant_id', $tenantId)->where($this->model->uniqCode, $uniqCode)->select($fields)->get();
+
+        return $data ? $data->toArray() : [];
     }
 
     /**

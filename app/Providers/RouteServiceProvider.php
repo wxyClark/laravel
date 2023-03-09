@@ -13,6 +13,7 @@ class RouteServiceProvider extends ServiceProvider
     const WEB_NAMESPACE = 'App\Http\Controllers';
     const API_NAMESPACE = 'App\Http\ApiControllers';
     const ADMIN_NAMESPACE = 'App\Http\AdminControllers';
+    const OPEN_API_NAMESPACE = 'App\Http\OpenApiControllers';
     /**
      * The path to the "home" route for your application.
      *
@@ -45,6 +46,10 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace(self::WEB_NAMESPACE)
                 ->group(base_path('routes/web.php'));
+
+            Route::middleware('openApi')
+                ->namespace(self::OPEN_API_NAMESPACE)
+                ->group(base_path('routes/openApi.php'));
         });
     }
 

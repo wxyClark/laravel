@@ -138,6 +138,6 @@ class BusinessNameRepository extends BaseRepository
      */
     private function detailCondition(int $tenantId, int $uniqCode)
     {
-        return $this->detailModel->where('tenant_id', $tenantId)->where('business_name_code', $uniqCode);
+        return $this->detailModel->where('tenant_id', $tenantId)->where($this->detailModel->uniqCode, $uniqCode);
     }
 }

@@ -72,7 +72,6 @@ class BusinessNameService extends BaseService
                 'created_by_uniq_code' => $params['user_code'],
             ];
 
-            $snowObj = new Snowflake(mt_rand(0, 31), getmypid());
             foreach ($params['details'] as $detail) {
                 //  【注意】
                 $detailUniqCode = $snowObj->id();
@@ -148,7 +147,95 @@ class BusinessNameService extends BaseService
 
     public function edit($params)
     {
+        $data = [];
+        $detailList = [];
+        $logList = [];
 
+        try {
+            $oldData = $this->businessNameRe->getByUniqCode($params['tenant_id'], $params['uniq_code']);
+            $data = array_merge($oldData, [
+                'type'                 => $params['type'],
+                'status'               => $params['status'],
+                'percent'              => $params['percent'],
+                'business_name'        => $params['business_name'],
+                'color'                => $params['color'],
+                'updated_by_uniq_code' => $params['user_code'],
+            ]);
+
+            $snowObj = new Snowflake(mt_rand(0, 31), getmypid());
+            foreach ($params['details'] as $detail) {
+                //  【注意】
+                $detailUniqCode = $snowObj->id();
+                $detailList[] = [
+                    'tenant_id'                 => $params['tenant_id'],
+                    'business_name_code'        => $data['business_name_code'],
+                    'business_name_detail_code' => $detailUniqCode,
+                    'desc'                      => $detail['desc'],
+                    'attributes'                => json_encode($detail['attributes'], JSON_UNESCAPED_UNICODE),
+                ];
+            }
+
+            $actionType = self::LOG_TYPE_EDIT;
+            foreach ($data as $key => $value) {
+                if (!isset(self::LOG_COLUMNS[$key])) {
+                    continue;
+                }
+
+                $map = self::LOG_COLUMNS[$key];
+                $logList[] = [
+                    'tenant_id'          => $data['tenant_id'],
+                    'business_name_code' => $data['business_name_code'],
+                    'action_type'        => $actionType,
+                    'remark'             => self::LOG_MAP[$actionType] ?? '',
+                    'column_name'        => $key,
+                    'before_change'      => json_encode(['value' => $data[$key], 'transform' => ''], JSON_UNESCAPED_UNICODE),
+                    'after_change'       => json_encode(['value' => $value, 'transform' => $map[$value] ?? ''], JSON_UNESCAPED_UNICODE),
+                    'operator_uniq_code' => $params['user_code'],
+                ];
+            }
+
+            $oldDetailList = $this->businessNameRe->getDetailList($params);
+            if ($detailList && isset(self::LOG_COLUMNS['detail_list'])) {
+                $logList[] = [
+                    'tenant_id'          => $data['tenant_id'],
+                    'business_name_code' => $data['business_name_code'],
+                    'action_type'        => $actionType,
+                    'remark'             => self::LOG_MAP[$actionType] ?? '',
+                    'column_name'        => 'detail_list',
+                    'before_change'      => json_encode(['value' => $oldDetailList, 'transform' => []], JSON_UNESCAPED_UNICODE),
+                    'after_change'       => json_encode(['value' => $detailList, 'transform' => []], JSON_UNESCAPED_UNICODE),
+                    'operator_uniq_code' => $params['user_code'],
+                ];
+            }
+        } catch (\Throwable $t) {
+            $this->errorLog($t, 'BusinessName新增 数据组装', __METHOD__, self::LOG_NAME);
+            throw $t;
+        }
+
+        try {
+            DB::beginTransaction();
+
+            if ($data) {
+                $this->businessNameRe->updateByUniqData($params['user'], ['uniq_code' => $data['business_name_code']], $data);
+            }
+            if ($detailList) {
+                $this->businessNameRe->addDetail($detailList);
+            }
+
+            if ($logList) {
+                $this->businessNameRe->addLog($logList);
+            }
+
+            DB::commit();
+        } catch (\Throwable $t) {
+            DB::rollBack();
+            $this->errorLog($t, 'BusinessName新增 事务提交', __METHOD__, self::LOG_NAME);
+            throw $t;
+        }
+
+        return [
+            'status' => '成功'
+        ];
     }
 
     /**
@@ -162,11 +249,9 @@ class BusinessNameService extends BaseService
     {
         try {
             $fields = ['business_name_code', 'type',  'status',  'percent',  'business_name',  'color',  'created_by_uniq_code', 'updated_by_uniq_code', 'created_at',  'updated_at'];
-            $params['page'] = 1;
-            $params['page_size'] = 1;
 
-            $data = $this->businessNameRe->getList(['tenant_id' => $params['tenant_id']], $params, $fields);
-            $data = $this->formatDataList($data);
+            $data = $this->businessNameRe->getByUniqCode($params['tenant_id'], $params['uniq_code'], $fields);
+            $data = $this->formatDataList([$data]);
             $data = current($data);
 
             unset($params['page'], $params['page_size']);
@@ -242,6 +327,11 @@ class BusinessNameService extends BaseService
     }
 
     private function formatListFromEs($params)
+    {
+
+    }
+
+    private function getRecord()
     {
 
     }
