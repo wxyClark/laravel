@@ -3,6 +3,7 @@
 ## 结构
 
 ERP：企业资源计划
+* UUA：商品智能系统(Universally Unique Auth)
 * PIS：商品智能系统(Product Intelligence System)
   > SPU = Standard Product Unit(标准化产品单元)
   > 
@@ -17,6 +18,7 @@ ERP：企业资源计划
 * WMS：仓库管理系统(Warehouse Management System)
 * CRM：客户关系管理(Customer Relationship Management)
 * DSR：卖家服务评分系统
+* CFS：评价反馈系统(Comment Feedback System)
 * FMS：财务管理系统(Finance Management System)
 > ROI = 投资回报率(return on investment)
 * CMS内容管理系统(Content Management System)

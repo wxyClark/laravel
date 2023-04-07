@@ -28,6 +28,10 @@ php artisan make:Model DIR_NAME/MODEL_NAME
 
 ## Service
 
+```danger
+基于一份数据取另一个份数据时，判定基础数据是否为空，避免扩展数据取全量
+```
+
 ## Controller
 
 ## Middleware

@@ -72,14 +72,21 @@ class Controller extends BaseController
         if ($validator->fails()) {
             $message = '';
             if ($validator->errors() && !empty($validator->errors())) {
-                $params = json_decode($validator->errors(), true);
-                if (!empty($params)) {
-                    foreach ($params as $value) {
-                        $message .= implode(',', $value).';';
+                $errors = json_decode($validator->errors(), true);
+
+                if (!empty($errors)) {
+                    foreach ($errors as $key => $value) {
+                        $keyArray = explode('.', $key);
+                        $originalValue = $params;
+                        foreach ($keyArray as $_key) {
+                            $originalValue = $originalValue[$_key] ?? [];
+                        }
+                        $message .= $originalValue; //  打印数组中校验不通过的具体项
+                        $message .= implode(',', $value) . ';';
                     }
                 }
             }
-            $rs = ['status' => false, 'msg' => $message];
+            return ['status' => false, 'msg' => $message];
         }
 
         if (!$rs['status']) {
